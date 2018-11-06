@@ -14,6 +14,18 @@ public:
     std::string getName() const;
     int getPrice() const;
     DishType getType() const;
+
+	//copy constructor
+	Dish(const  Dish &other);
+
+	//move constructor
+	Dish(Dish&& other);
+
+	//destructor
+	~Dish();
+
+
+
 private:
 	const int id;
     const std::string name;
@@ -23,3 +35,4 @@ private:
 
 
 #endif
+

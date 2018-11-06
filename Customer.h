@@ -12,9 +12,21 @@ public:
     virtual std::string toString() const = 0;
     std::string getName() const;
     int getId() const;
+
+
+	//copy constructor
+	Customer(const Customer &other);
+
+
+	//destructor
+	~Customer();
+
+	//move constructor
+	Customer(Customer&& other);
+
 private:
     const std::string name;
-    const int id
+    const int id;
 };
 
 
@@ -55,3 +67,4 @@ private:
 
 
 #endif
+

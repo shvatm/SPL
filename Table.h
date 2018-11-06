@@ -21,9 +21,27 @@ public:
     void closeTable();
     int getBill();
     bool isOpen();
+
+
+    //copy constructor
+    Table(const  Table &other);
+    //destructor
+    ~Table();
+
+    //move constructor
+    Table(Table&& other);
+
+    //move assignment
+    Table &&operator=(Table&& other);
+
+
+    //copy assignment
+    Table &operator=(const Table &other);
+
 private:
     int capacity;
-    bool open;
+    bool open;//true when the table is open, false when it's close
+    int tid;
     std::vector<Customer*> customersList;
     std::vector<OrderPair> orderList; //A list of pairs for each order in a table - (customer_id, Dish)
 };

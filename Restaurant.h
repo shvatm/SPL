@@ -18,6 +18,23 @@ public:
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Dish>& getMenu();
 
+	//copy constructor
+	Restaurant(const Restaurant &other);
+
+	//destructor
+	~Restaurant();
+
+	//move constractor
+	Restaurant(Restaurant&& other);
+
+	//move assignment
+	Restaurant &&operator=(Restaurant&& other);
+
+	//copy assignment
+	Restaurant &operator=(const Restaurant &other);
+
+
+
 private:
     bool open;
     std::vector<Table*> tables;

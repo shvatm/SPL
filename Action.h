@@ -18,6 +18,28 @@ public:
     ActionStatus getStatus() const;
     virtual void act(Restaurant& restaurant)=0;
     virtual std::string toString() const=0;
+
+	//copy constructor
+BaseAction(const BaseAction &other);
+
+
+	//destructor
+	~BaseAction();
+
+	//move constructor
+	BaseAction(BaseAction&& other);
+
+	//move assignment
+
+	BaseAction &&operator= (BaseAction &&other);
+
+
+	//copy assignment
+	BaseAction &operator=(const BaseAction& other);
+
+
+
+
 protected:
     void complete();
     void error(std::string errorMsg);
