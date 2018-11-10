@@ -20,7 +20,13 @@ public:
     virtual std::string toString() const=0;
 
 	//copy constructor
-BaseAction(const BaseAction &other);
+//BaseAction(const BaseAction &other);
+
+//copy constructor
+    BaseAction* copyme(const BaseAction &other);
+
+    //copy function
+    virtual BaseAction* copy() const =0;
 
 
 	//destructor
@@ -55,6 +61,7 @@ public:
     OpenTable(int id, std::vector<Customer *> &customersList);
     void act(Restaurant &restaurant);
     std::string toString() const;
+    BaseAction* copy() const ;// copy function- coppying this
 private:
 	const int tableId;
 	const std::vector<Customer *> customers;
@@ -66,6 +73,7 @@ public:
     Order(int id);
     void act(Restaurant &restaurant);
     std::string toString() const;
+    BaseAction* copy() const ;//copy function
 private:
     const int tableId;
 };
@@ -76,6 +84,7 @@ public:
     MoveCustomer(int src, int dst, int customerId);
     void act(Restaurant &restaurant);
     std::string toString() const;
+    BaseAction* copy() const ;//copy function
 private:
     const int srcTable;
     const int dstTable;
@@ -88,6 +97,7 @@ public:
     Close(int id);
     void act(Restaurant &restaurant);
     std::string toString() const;
+    BaseAction* copy() const ;//copy function
 private:
     const int tableId;
 };
@@ -98,6 +108,7 @@ public:
     CloseAll();
     void act(Restaurant &restaurant);
     std::string toString() const;
+    BaseAction* copy() const ;//copy function
 private:
 };
 
@@ -107,6 +118,7 @@ public:
     PrintMenu();
     void act(Restaurant &restaurant);
     std::string toString() const;
+    BaseAction* copy() const ;//copy function
 private:
 };
 
@@ -116,6 +128,7 @@ public:
     PrintTableStatus(int id);
     void act(Restaurant &restaurant);
     std::string toString() const;
+    BaseAction* copy() const ;//copy function
 private:
     const int tableId;
 };
@@ -126,6 +139,7 @@ public:
     PrintActionsLog();
     void act(Restaurant &restaurant);
     std::string toString() const;
+    BaseAction* copy() const ;//copy function
 private:
 };
 
@@ -135,6 +149,7 @@ public:
     BackupRestaurant();
     void act(Restaurant &restaurant);
     std::string toString() const;
+    BaseAction* copy() const ;//copy function
 private:
 };
 
@@ -144,6 +159,7 @@ public:
     RestoreResturant();
     void act(Restaurant &restaurant);
     std::string toString() const;
+    BaseAction* copy() const ;//copy function
 
 };
 

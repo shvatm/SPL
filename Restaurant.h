@@ -21,6 +21,7 @@ public:
 	//copy constructor
 	Restaurant(const Restaurant &other);
 
+
 	//destructor
 	~Restaurant();
 

@@ -21,6 +21,7 @@ public:
     void closeTable();
     int getBill();
     bool isOpen();
+    int getId() const;
 
 
     //copy constructor
@@ -37,6 +38,11 @@ public:
 
     //copy assignment
     Table &operator=(const Table &other);
+
+    //copy function
+    Table* copy() const ;
+
+
 
 private:
     int capacity;
