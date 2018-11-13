@@ -5,7 +5,7 @@
 
 enum DishType{
     VEG, SPC, BVG, ALC
-};
+,};
 
 class Dish{
 public:

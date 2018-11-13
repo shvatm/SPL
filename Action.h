@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include "Customer.h"
+#include "Table.h"
 
 enum ActionStatus{
     PENDING, COMPLETED, ERROR
@@ -23,7 +24,7 @@ public:
 //BaseAction(const BaseAction &other);
 
 //copy constructor
-    BaseAction* copyme(const BaseAction &other);
+   // BaseAction* copyme(const BaseAction &other);
 
     //copy function
     virtual BaseAction* copy() const =0;
@@ -33,15 +34,15 @@ public:
 	~BaseAction();
 
 	//move constructor
-	BaseAction(BaseAction&& other);
+	//BaseAction(BaseAction&& other);
 
 	//move assignment
 
-	BaseAction &&operator= (BaseAction &&other);
+//	BaseAction &&operator= (BaseAction &&other);
 
 
 	//copy assignment
-	BaseAction &operator=(const BaseAction& other);
+	//BaseAction &operator=(const BaseAction& other);
 
 
 
@@ -50,6 +51,8 @@ protected:
     void complete();
     void error(std::string errorMsg);
     std::string getErrorMsg() const;
+
+    void copyStatusToMe(const BaseAction& other);
 private:
     std::string errorMsg;
     ActionStatus status;
@@ -74,8 +77,11 @@ public:
     void act(Restaurant &restaurant);
     std::string toString() const;
     BaseAction* copy() const ;//copy function
+    void GetTheOrders(Table* t);//gets a table and returns a string of all the orders &customers
+    std::string Getcorder(Customer* c,std::vector<OrderPair&>order);//gets the orders of a specific cusotmer and returns a string of them
 private:
     const int tableId;
+    std:: string str="";
 };
 
 
@@ -85,6 +91,9 @@ public:
     void act(Restaurant &restaurant);
     std::string toString() const;
     BaseAction* copy() const ;//copy function
+    int GetC(int id,std::vector<Customer*>clist);
+    std::vector<OrderPair> EraseTheorders(int cid,std::vector<OrderPair>orders);
+    void Addtheorders(std::vector<OrderPair>cstordr,Table* dstn);
 private:
     const int srcTable;
     const int dstTable;
@@ -100,6 +109,7 @@ public:
     BaseAction* copy() const ;//copy function
 private:
     const int tableId;
+    std::string ans;
 };
 
 

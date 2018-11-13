@@ -21,6 +21,7 @@ public:
     void closeTable();
     int getBill();
     bool isOpen();
+    bool isfull();//returns true if full, false if not
     int getId() const;
 
 
@@ -33,7 +34,7 @@ public:
     Table(Table&& other);
 
     //move assignment
-    Table &&operator=(Table&& other);
+    Table &operator=(Table&& other);
 
 
     //copy assignment
@@ -41,6 +42,9 @@ public:
 
     //copy function
     Table* copy() const ;
+
+    //add a list of customers
+    bool addclist(std::vector<Customer*>customerslist);
 
 
 

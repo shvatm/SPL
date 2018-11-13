@@ -14,9 +14,6 @@ public:
     int getId() const;
 
 
-	//copy constructor
-	Customer* copyme(const Customer &other);
-
 	//copy function
 	virtual Customer* copy() const =0;
 
@@ -38,6 +35,7 @@ public:
 	Customer* copy() const ;// copy function- coppying this
 	std::vector<int> order(const std::vector<Dish> &menu);
     std::string toString() const;
+
 private:
 };
 

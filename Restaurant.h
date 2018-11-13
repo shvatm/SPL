@@ -11,7 +11,8 @@
 class Restaurant{		
 public:
 	Restaurant();
-    Restaurant(const std::string &configFilePath);
+
+    explicit Restaurant(const std::string &configFilePath);
     void start();
     int getNumOfTables() const;
     Table* getTable(int ind);
@@ -29,18 +30,23 @@ public:
 	Restaurant(Restaurant&& other);
 
 	//move assignment
-	Restaurant &&operator=(Restaurant&& other);
+	Restaurant &operator=(Restaurant&& other);
 
 	//copy assignment
 	Restaurant &operator=(const Restaurant &other);
 
+    //separade string by ,
+    std::vector<std::string> separadebypsic(std::string s);
 
+    //casting string into DishType
+    DishType stringtodishtype(std::string s);
 
 private:
     bool open;
     std::vector<Table*> tables;
     std::vector<Dish> menu;
     std::vector<BaseAction*> actionsLog;
+    int numoftables;
 };
 
 #endif
