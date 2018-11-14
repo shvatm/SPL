@@ -5,7 +5,8 @@
 
 enum DishType{
     VEG, SPC, BVG, ALC
-,};
+,
+};
 
 class Dish{
 public:
@@ -14,6 +15,7 @@ public:
     std::string getName() const;
     int getPrice() const;
     DishType getType() const;
+    std::string Dishstring(DishType d);
 
 	//copy constructor
 	Dish(const  Dish &other);

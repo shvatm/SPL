@@ -17,8 +17,10 @@ class BaseAction{
 public:
     BaseAction();
     ActionStatus getStatus() const;
+
     virtual void act(Restaurant& restaurant)=0;
     virtual std::string toString() const=0;
+    std::string statustostring(ActionStatus s);
 
 	//copy constructor
 //BaseAction(const BaseAction &other);
@@ -28,7 +30,6 @@ public:
 
     //copy function
     virtual BaseAction* copy() const =0;
-
 
 	//destructor
 	~BaseAction();
@@ -44,7 +45,7 @@ public:
 	//copy assignment
 	//BaseAction &operator=(const BaseAction& other);
 
-
+    std::string geterrorMsg();
 
 
 protected:
@@ -68,6 +69,7 @@ public:
 private:
 	const int tableId;
 	const std::vector<Customer *> customers;
+	std::string s="";
 };
 
 
@@ -119,7 +121,10 @@ public:
     void act(Restaurant &restaurant);
     std::string toString() const;
     BaseAction* copy() const ;//copy function
+    std::vector<Table*> sortbyid(std::vector<Table*> tables);
+	int findmin(std::vector<Table*> tables);
 private:
+	std::string stg="";
 };
 
 
@@ -130,6 +135,7 @@ public:
     std::string toString() const;
     BaseAction* copy() const ;//copy function
 private:
+	std::string stg="";
 };
 
 
@@ -139,8 +145,10 @@ public:
     void act(Restaurant &restaurant);
     std::string toString() const;
     BaseAction* copy() const ;//copy function
+    std::string booltostring(bool t);
 private:
     const int tableId;
+    std::string outpt="";
 };
 
 
@@ -160,6 +168,7 @@ public:
     void act(Restaurant &restaurant);
     std::string toString() const;
     BaseAction* copy() const ;//copy function
+
 private:
 };
 

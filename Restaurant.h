@@ -16,6 +16,7 @@ public:
     void start();
     int getNumOfTables() const;
     Table* getTable(int ind);
+    std::vector<Table*> gettables();
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Dish>& getMenu();
 
@@ -40,6 +41,8 @@ public:
 
     //casting string into DishType
     DishType stringtodishtype(std::string s);
+
+    void closerest();
 
 private:
     bool open;
