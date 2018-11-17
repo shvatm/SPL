@@ -36,13 +36,13 @@ public:
 	//copy assignment
 	Restaurant &operator=(const Restaurant &other);
 
-    //separade string by ,
-    std::vector<std::string> separadebypsic(std::string s);
 
     //casting string into DishType
     DishType stringtodishtype(std::string s);
 
     void closerest();
+
+    std::vector<std::string> split(std::string str, char c);
 
 private:
     bool open;
@@ -50,6 +50,8 @@ private:
     std::vector<Dish> menu;
     std::vector<BaseAction*> actionsLog;
     int numoftables;
+    int cid; //customer id
+    int did; //dish id
 };
 
 #endif

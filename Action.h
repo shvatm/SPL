@@ -79,11 +79,10 @@ public:
     void act(Restaurant &restaurant);
     std::string toString() const;
     BaseAction* copy() const ;//copy function
-    void GetTheOrders(Table* t);//gets a table and returns a string of all the orders &customers
-    std::string Getcorder(Customer* c,std::vector<OrderPair&>order);//gets the orders of a specific cusotmer and returns a string of them
+    //void GetTheOrders(Table* t);//gets a table and returns a string of all the orders &customers
+   // std::string Getcorder(Customer* c,std::vector<OrderPair&>order);//gets the orders of a specific cusotmer and returns a string of them
 private:
     const int tableId;
-    std:: string str="";
 };
 
 
@@ -96,6 +95,7 @@ public:
     int GetC(int id,std::vector<Customer*>clist);
     std::vector<OrderPair> EraseTheorders(int cid,std::vector<OrderPair>orders);
     void Addtheorders(std::vector<OrderPair>cstordr,Table* dstn);
+    std::vector<OrderPair>withoutc(int cid,std::vector<OrderPair>orders);
 private:
     const int srcTable;
     const int dstTable;

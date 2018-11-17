@@ -17,15 +17,20 @@ public:
     DishType getType() const;
     std::string Dishstring(DishType d);
 
-	//copy constructor
-	Dish(const  Dish &other);
+
+
+    //copy constructor
+	//Dish(const Dish &other);
 
 	//move constructor
-	Dish(Dish&& other);
+	//Dish(Dish&& other);
 
 	//destructor
 	~Dish();
 
+   //copy operator
+	//Dish& Dish::operator=(const Dish& other);
+	//Dish& Dish::operator=(const Dish& other) = 0;
 
 
 private:
