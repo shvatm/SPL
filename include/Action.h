@@ -25,6 +25,7 @@ public:
     void setParams(std::string params) { this->params = params; };
     std::string getStatusString() const;
     std::string getParams() { return params; };
+    virtual ~BaseAction();
 //end of lynn's functions
 	//copy constructor
 //BaseAction(const BaseAction &other);
@@ -36,7 +37,6 @@ public:
     virtual BaseAction* copy() const =0;
 
 	//destructor
-	~BaseAction();
 
 	//move constructor
 	//BaseAction(BaseAction&& other);
@@ -109,7 +109,7 @@ public:
     std::string toString() const;
     BaseAction* copy() const ;//copy function
     int GetC(int id,std::vector<Customer*>clist);
-    std::vector<OrderPair> orderswittoutc(int cid, std::vector<OrderPair> OrderList);
+    std::vector<OrderPair> orderswittoutc(int cid, std::vector<OrderPair>& OrderList);
 
 
 private:

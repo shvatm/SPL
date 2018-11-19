@@ -52,8 +52,9 @@ Restaurant::Restaurant(const std::string &configFilePath)
     }
     TablesCapacitiesInt.push_back(stoi(token));
 // ADDING TABLES WITH CAPACITIES FROM INT VECTOR
+    Table *toAdd;
     for (size_t i = 0; i < TablesCapacitiesInt.size(); i++) {
-        Table *toAdd = new Table(TablesCapacitiesInt.at(i));
+         toAdd = new Table(TablesCapacitiesInt.at(i));
         tables.push_back(toAdd);
     }
 
@@ -157,19 +158,19 @@ Restaurant::Restaurant() { //the vectors will be constracted from the default
 //copy constructor
 Restaurant::Restaurant(const Restaurant &other):open(other.open)
 {
-    for (int i = 0; i <other.menu.size() ; ++i) { //coppying the menu
+    for (size_t i = 0; i <other.menu.size() ; ++i) { //coppying the menu
         menu.push_back(other.menu[i]);
 
     }
 
-    for(int j=0;j<other.tables.size();j=j++)//coppying the tables list
+    for(size_t j=0;j<other.tables.size();j++)//coppying the tables list
     {
         Table* tmp=other.tables[j]->copy();
         tables.push_back(tmp);
     }
 
 
-    for (int k = 0; k < other.actionsLog.size(); ++k) {
+    for (size_t k = 0; k < other.actionsLog.size(); ++k) {
         BaseAction* tmp=other.actionsLog[k]->copy();
         actionsLog.push_back(tmp);
 
@@ -183,18 +184,19 @@ Restaurant::Restaurant(const Restaurant &other):open(other.open)
 //destructor
 Restaurant::~Restaurant() {
     open=false;
-    std::vector<Dish>().swap(menu);
-    for(int i=0;i<actionsLog.size();i++)
+    menu.clear();
+    for(size_t i=0;i<actionsLog.size();i++)
     {
         delete actionsLog[i];//deleting the actions
         actionsLog[i]= nullptr;//deleting the pointer
     }
-    for (int j = 0; j<tables.size(); j++) {
+    actionsLog.clear();
+    for (size_t j = 0; j<tables.size(); j++) {
         delete tables[j];
         tables[j]=nullptr;
 
     }
-
+    tables.clear();
 
 }
 
@@ -230,19 +232,19 @@ Restaurant& Restaurant::operator=(const Restaurant &other) {// make sure that th
 
     open=other.open;
 
-    for (int i = 0; i <other.menu.size() ; ++i) { //coppying the menu
+    for (size_t i = 0; i <other.menu.size() ; ++i) { //coppying the menu
         menu.push_back(other.menu[i]);
 
     }
 
-    for(int j=0;j<other.tables.size();j=j++)//coppying the tables list
+    for(size_t j=0;j<other.tables.size();j++)//coppying the tables list
     {
         Table* tmp=other.tables[j]->copy();
         tables.push_back(tmp);
     }
 
 
-    for (int k = 0; k < other.actionsLog.size(); ++k) {
+    for (size_t k = 0; k < other.actionsLog.size(); ++k) {
         BaseAction* tmp=other.actionsLog[k]->copy();
         actionsLog.push_back(tmp);
 
@@ -280,11 +282,11 @@ void Restaurant::start() {
     {
         std::getline(std::cin,act);
         std::vector<string> input=split(act,' ');//split the line by spaces into array of words
-
+        BaseAction* nextAct;
         if (input[0] == "open") {
             int id = stoi(input[1]);
             std::vector<Customer *> customers;
-            for (int i = 2; i < input.size(); ++i) {
+            for (size_t i = 2; i < input.size(); ++i) {
                 std::vector<string> c = split(input[i],',');
                 std::string name = c[0];
                 std::string type = c[1];
@@ -302,64 +304,66 @@ void Restaurant::start() {
                     customers.push_back(spc);
                 }
                 if (type == "veg") {
-                    VegetarianCustomer *veg = new VegetarianCustomer(name, cid++);
+                    VegetarianCustomer *veg = new VegetarianCustomer(name,cid++);
                     customers.push_back(veg);
 
                 }
 
 
             }
-            OpenTable *ot = new OpenTable(id, customers);
-            ot->act(*this);
+            nextAct = new OpenTable(id, customers);
 
         }
 
         if (input[0] == "order") {
             int tid = stoi(input[1]);
-            Order *orr = new Order(tid);
-            orr->act(*this);
+            nextAct = new Order(tid);
+
         }
         if (input[0] == "move") {
-            MoveCustomer *mc = new MoveCustomer(stoi(input[1]), stoi(input[2]), stoi(input[3]));
-            mc->act(*this);
+            nextAct = new MoveCustomer(stoi(input[1]), stoi(input[2]), stoi(input[3]));
+
 
         }
         if (input[0] == "status") {
             int id2 = stoi(input[1]);
-            PrintTableStatus *ts = new PrintTableStatus(id2);
-            ts->act(*this);
+            nextAct = new PrintTableStatus(id2);
+
         }
 
         if (input[0] == "log") {
-            PrintActionsLog *lg = new PrintActionsLog();
-            lg->act(*this);
+            nextAct = new PrintActionsLog();
+
         }
 
         if (input[0] == "backup") {
 
-            BackupRestaurant *br = new BackupRestaurant();
-            br->act(*this);
+            nextAct = new BackupRestaurant();
+
         }
 
         if (input[0] == "restore") {
 
-            RestoreResturant *rr = new RestoreResturant();
-            rr->act(*this);
+            nextAct = new RestoreResturant();
+
         }
         if (input[0] == "menu") {
-            PrintMenu *pm = new PrintMenu();
-            pm->act(*this);
+            nextAct = new PrintMenu();
+
         }
 
         if (input[0] == "close") {
-            Close *cl = new Close(stoi(input[1]));
-            cl->act(*this);
+            nextAct = new Close(stoi(input[1]));
+
 
         }
         if (input[0]=="closeall") {
-            CloseAll *cla = new CloseAll();
-            cla->act(*this);
+            nextAct = new CloseAll();
+
         }
+
+        nextAct->act(*this);
+        this->actionsLog.push_back(nextAct);
     }
 }
 
@@ -378,8 +382,9 @@ std::vector<std::string> Restaurant::split(std::string str, char c) {
 }
 
 Table* Restaurant::getTable(int ind) {
-
-    return tables.at(ind);
+    if (ind<(signed)tables.size()){
+    return tables.at(ind);}
+    else{return nullptr;}
 }
 
 
@@ -394,6 +399,8 @@ DishType Restaurant::stringtodishtype(std::string s) {
         return BVG;
     if(s=="SPC")
         return SPC;
+
+    return BVG;
 }
 
 std::vector<Table *> Restaurant::gettables() {
@@ -402,8 +409,8 @@ std::vector<Table *> Restaurant::gettables() {
 
 void Restaurant::closerest() {
     open= false;
-    CloseAll* b=new CloseAll;
-    b->act(*this);
+    //CloseAll* b=new CloseAll;
+    //b->act(*this);
 }
 
 

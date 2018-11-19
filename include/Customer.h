@@ -20,13 +20,13 @@ public:
 	virtual Customer* copy() const =0;
 
 	//destructor
-	~Customer();
+	virtual ~Customer();
 
 	//move constructor
 	//Customer(Customer&& other);
 
 private:
-    std::string t;
+   // std::string t;
     const std::string name;
     const int id;
 };
@@ -35,9 +35,10 @@ private:
 class VegetarianCustomer : public Customer {
 public:
 	VegetarianCustomer(std::string name, int id);
-	Customer* copy() const ;// copy function- coppying this
+	Customer* copy() const;// copy function- copying this
 	std::vector<int> order (const std::vector<Dish> &menu);
     std::string toString() const;
+    ~VegetarianCustomer()= default;
     int vegsmallestid(const std::vector<Dish> &menu);//returns the id of the vegetarian smallest id
     int mostexpensiveb(const std::vector<Dish> &menu);//returns the most expensive beverage
 
@@ -51,6 +52,7 @@ public:
 	Customer* copy() const; //copy function
     std::vector<int> order(const std::vector<Dish> &menu);
     std::string toString() const;
+    ~CheapCustomer()= default;
     int mostcheap(const std::vector<Dish> &menu);//returns the id of the cheapest dish
 private:
     int numberoforders;
@@ -66,6 +68,7 @@ public:
     std::vector<Dish>allspicy(const std::vector<Dish> &menu);//returns all the spicy dishes
     int mostexp(const std::vector<Dish> &menu);
     int cheapest(const std::vector<Dish> &menu);
+    ~SpicyCustomer()= default;
     std::string toString() const;
 private:
     int numoforders;
@@ -79,6 +82,7 @@ public:
 	Customer* copy() const ;
     std::vector<int> order(const std::vector<Dish> &menu);
     std::string toString() const;
+    ~AlchoholicCustomer()= default;
     std::vector<Dish> getalc(const std::vector<Dish> &menu);//returns all the alc drinks
    // int mostexpensive(std::vector<int> alcmenu);//returns the most cheap dish
     void alcbyorder(std::vector<int> alcmenu);//return the menu by order from cheapest to most expensive
@@ -87,6 +91,7 @@ private:
     std::vector<int>alcprice;
     std::vector<int>alcid;
     bool flag;
+    int counter;
 };
 
 
