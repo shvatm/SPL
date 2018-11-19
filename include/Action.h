@@ -21,7 +21,11 @@ public:
     virtual void act(Restaurant& restaurant)=0;
     virtual std::string toString() const=0;
     std::string statustostring(ActionStatus s);
-
+ //lynn's functions
+    void setParams(std::string params) { this->params = params; };
+    std::string getStatusString() const;
+    std::string getParams() { return params; };
+//end of lynn's functions
 	//copy constructor
 //BaseAction(const BaseAction &other);
 
@@ -52,6 +56,7 @@ protected:
     void complete();
     void error(std::string errorMsg);
     std::string getErrorMsg() const;
+    std::string params;
 
     void copyStatusToMe(const BaseAction& other);
 private:
@@ -63,12 +68,23 @@ private:
 class OpenTable : public BaseAction {
 public:
     OpenTable(int id, std::vector<Customer *> &customersList);
+    //copy constructor
+    OpenTable(const OpenTable& other);
+    //destructor
+    ~OpenTable();
+    //move constractor
+    OpenTable(OpenTable&& other);
+    //move assignment
+    OpenTable& operator=(OpenTable&& other);
+    //copy assignment
+    OpenTable&operator=(const OpenTable& other);
+
     void act(Restaurant &restaurant);
     std::string toString() const;
     BaseAction* copy() const ;// copy function- coppying this
 private:
 	const int tableId;
-	const std::vector<Customer *> customers;
+	 std::vector<Customer *> customers;
 	std::string s="";
 };
 
@@ -93,13 +109,14 @@ public:
     std::string toString() const;
     BaseAction* copy() const ;//copy function
     int GetC(int id,std::vector<Customer*>clist);
-    std::vector<OrderPair> EraseTheorders(int cid,std::vector<OrderPair>orders);
-    void Addtheorders(std::vector<OrderPair>cstordr,Table* dstn);
-    std::vector<OrderPair>withoutc(int cid,std::vector<OrderPair>orders);
+    std::vector<OrderPair> orderswittoutc(int cid, std::vector<OrderPair> OrderList);
+
+
 private:
     const int srcTable;
     const int dstTable;
     const int id;
+
 };
 
 

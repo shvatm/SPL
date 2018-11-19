@@ -22,7 +22,7 @@ public:
     int getBill();
     bool isOpen();
     bool isfull();//returns true if full, false if not
-    int getId() const;
+   // int getId() const;
 
 
 
@@ -52,7 +52,7 @@ public:
 private:
     int capacity;
     bool open;//true when the table is open, false when it's close
-    int tid=-1;//not sure if its ok that i set it to -1
+    //int tid=-1;//not sure if its ok that i set it to -1
     std::vector<Customer*> customersList;
     std::vector<OrderPair> orderList; //A list of pairs for each order in a table - (customer_id, Dish)
 };

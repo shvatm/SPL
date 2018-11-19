@@ -8,7 +8,7 @@
 class Customer{
 public:
     Customer(std::string c_name, int c_id);
-    virtual std::vector<int> order(const std::vector<Dish> &menu)=0;
+    virtual std::vector<int> order(const std::vector<Dish> &menu) =0;
     virtual std::string toString() const = 0;
     std::string getName() const;
     int getId() const;
@@ -26,6 +26,7 @@ public:
 	//Customer(Customer&& other);
 
 private:
+    std::string t;
     const std::string name;
     const int id;
 };
@@ -35,7 +36,7 @@ class VegetarianCustomer : public Customer {
 public:
 	VegetarianCustomer(std::string name, int id);
 	Customer* copy() const ;// copy function- coppying this
-	std::vector<int> order(const std::vector<Dish> &menu);
+	std::vector<int> order (const std::vector<Dish> &menu);
     std::string toString() const;
     int vegsmallestid(const std::vector<Dish> &menu);//returns the id of the vegetarian smallest id
     int mostexpensiveb(const std::vector<Dish> &menu);//returns the most expensive beverage
@@ -68,6 +69,7 @@ public:
     std::string toString() const;
 private:
     int numoforders;
+
 };
 
 
@@ -78,11 +80,13 @@ public:
     std::vector<int> order(const std::vector<Dish> &menu);
     std::string toString() const;
     std::vector<Dish> getalc(const std::vector<Dish> &menu);//returns all the alc drinks
-    int mostexpensive(std::vector<int> alcmenu);//returns the most cheap dish
+   // int mostexpensive(std::vector<int> alcmenu);//returns the most cheap dish
     void alcbyorder(std::vector<int> alcmenu);//return the menu by order from cheapest to most expensive
-    int getorderid(std::vector<Dish>&menu,int price);//recieve a price and menu and return the id of the dish
+    int getorderid(std::vector<int> ids, const std::vector<Dish>&menu,int price);//recieve a price and menu and return the id of the dish
 private:
     std::vector<int>alcprice;
+    std::vector<int>alcid;
+    bool flag;
 };
 
 

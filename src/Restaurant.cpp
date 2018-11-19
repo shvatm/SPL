@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
-#include "Restaurant.h"
+#include "../include/Restaurant.h"
+#include "../include/Table.h"
 #include "fstream"
 #include "iostream"
 
@@ -17,12 +18,89 @@ std::vector<BaseAction*> actionsLog;
 //constructor
 Restaurant::Restaurant(const std::string &configFilePath)
 {
+
+
+    std::ifstream fileToRead(configFilePath);
+    std::string line;
+    std::vector<string> relevantLines;
+
+
+    while (getline(fileToRead,line)) {
+
+        // TAKING ONLY RELEVANTS CONFIG LINES. DELETING COMMENTS END EMPTY LINES PUT EVERYTHING IN A STRING VECTOR
+        if (line.at(0) != '#' && line.at(0) != '\r') {
+            relevantLines.push_back(line);
+            line.erase(line.find_last_not_of(" \r\n\t") + 1);
+        }
+    }
+
+
+    // INITIALIZING NUMBER OF TABLES
+    numoftables = stoi(relevantLines.at(0));
+
+    // INITIALIZING TABLES CAPACITIES
+    std::vector<int> TablesCapacitiesInt;
+    string s = relevantLines.at(1);
+    string delimiter;
+    delimiter = ',';
+    size_t pos = 0;
+    std::string token;
+    while ((pos = s.find(delimiter)) != std::string::npos) {
+        token = s.substr(0, pos);
+        TablesCapacitiesInt.push_back(stoi(token));
+        s.erase(0, pos + delimiter.length());
+    }
+    TablesCapacitiesInt.push_back(stoi(token));
+// ADDING TABLES WITH CAPACITIES FROM INT VECTOR
+    for (size_t i = 0; i < TablesCapacitiesInt.size(); i++) {
+        Table *toAdd = new Table(TablesCapacitiesInt.at(i));
+        tables.push_back(toAdd);
+    }
+
+    //ADDING DISHES
+    int DishCounter = 0;
+    for (size_t i=2;i<relevantLines.size();i++) {
+        string currentLine = relevantLines.at(i);
+        DishType type;
+        int price;
+        string name;
+
+        //getting dish name
+        name = currentLine.substr(0,currentLine.find(','));
+
+        //getting dish type
+        string typeInString = currentLine.substr(name.length()+1,line.find(',')-1);
+        if (typeInString.at(0) == 'B')
+            type = BVG;
+
+        else if (typeInString.at(0) == 'A')
+            type = ALC;
+
+        else if (typeInString.at(0) == 'V')
+            type = VEG;
+
+        else if (typeInString.at(0) == 'S')
+            type = SPC;
+
+        //getting dish price
+        string PriceInString = currentLine.substr(name.length()+5);
+        price = stoi(PriceInString);
+
+        Dish toAdd(DishCounter, name, price, type);
+        menu.push_back(toAdd);
+        DishCounter++;
+    }
+
+/*
     cid=-1;
     did=-1;
     std:string s1;
     string commandline;
     std::vector<std::string> v;
-    std::ifstream f1(configFilePath);
+    std::ifstream f1;
+    f1.open(configFilePath.c_str());
+    if (f1.is_open()){std::cout << "open\n";}
+    else {std::cout <<"not open\n" << configFilePath << "\n";}
     while (std::getline(f1,s1))
     {
         if(s1[0]=='#')
@@ -64,10 +142,11 @@ Restaurant::Restaurant(const std::string &configFilePath)
         }
         cout<<s1<<endl;
 
+
     }
-    //tables=vector<Table*>();
-   // menu=vector<Dish>();
-    //actionsLog=vector<BaseAction*>();
+
+    this->start();
+*/
 }
 
 Restaurant::Restaurant() { //the vectors will be constracted from the default
@@ -141,6 +220,8 @@ Restaurant &Restaurant::operator=(Restaurant &&other) {
     this->actionsLog=move(other.actionsLog);
     this->menu=move(other.menu);
     this->open=other.open;
+
+    return *this;
 }
 
 
@@ -188,16 +269,17 @@ int Restaurant::getNumOfTables() const {
 }
 
 void Restaurant::start() {
+
+    this->open= true;
     std::string act;
     std:: cout<<"Restaurant is now open!"<<+"\n";
-    std::getline(std::cin,act);
-    std::vector<string> input=split(act,' ');//split the line by spaces into array of words
-    if (input[0]=="closeall") {
-        CloseAll* cla=new CloseAll();
-        cla->act(*this);
-    }
-    else
+    cid=0;
+    did=0;
+
+    while(act!="closeall")
     {
+        std::getline(std::cin,act);
+        std::vector<string> input=split(act,' ');//split the line by spaces into array of words
 
         if (input[0] == "open") {
             int id = stoi(input[1]);
@@ -206,21 +288,21 @@ void Restaurant::start() {
                 std::vector<string> c = split(input[i],',');
                 std::string name = c[0];
                 std::string type = c[1];
-                cid = cid + 1;//giving the customer id
+                //cid = cid + 1;//giving the customer id
                 if (type == "chp") {
-                    CheapCustomer *chp = new CheapCustomer(name, cid);
+                    CheapCustomer*chp = new CheapCustomer(name, cid++);
                     customers.push_back(chp);
                 }
                 if (type == "alc") {
-                    AlchoholicCustomer *alc = new AlchoholicCustomer(name, cid);
+                    AlchoholicCustomer *alc = new AlchoholicCustomer(name, cid++);
                     customers.push_back(alc);
                 }
                 if (type == "spc") {
-                    CheapCustomer *spc = new CheapCustomer(name, cid);
+                    SpicyCustomer *spc = new SpicyCustomer(name, cid++);
                     customers.push_back(spc);
                 }
                 if (type == "veg") {
-                    VegetarianCustomer *veg = new VegetarianCustomer(name, cid);
+                    VegetarianCustomer *veg = new VegetarianCustomer(name, cid++);
                     customers.push_back(veg);
 
                 }
@@ -274,9 +356,14 @@ void Restaurant::start() {
             cl->act(*this);
 
         }
-
+        if (input[0]=="closeall") {
+            CloseAll *cla = new CloseAll();
+            cla->act(*this);
+        }
     }
 }
+
+
 
 
 std::vector<std::string> Restaurant::split(std::string str, char c) {
@@ -291,13 +378,8 @@ std::vector<std::string> Restaurant::split(std::string str, char c) {
 }
 
 Table* Restaurant::getTable(int ind) {
-    Table* ans= nullptr;
-    for (int i = 0; i < tables.size(); ++i) {
-        if(tables[i]->getId()==ind)
-            ans=tables[i];
 
-    }
-    return ans;
+    return tables.at(ind);
 }
 
 
